@@ -1,5 +1,6 @@
 from random import randint, seed
 from constants import *
+from monuments import *
 
 land = [[0 for j in range(WIDTH)] for i in range(HEIGHT)]
 layerMap = [[0 for j in range(WIDTH)] for i in range(HEIGHT)]
@@ -8,18 +9,18 @@ landCoordinates = []
 neighbouringLand = 0
 worldSeed = 0
 
+
+# --- Genrating Land --- #
 def pprint(grid):
     print("\n" * 2)
     for i in range(HEIGHT):
         for j in range(WIDTH):
             print(grid[i][j], end="  ") 
-        print()
-		
+        print()		
 def createLand() -> None:
     for i in range(LAND_TO_CREATE):
         coord = [randint(0, WIDTH - 1), randint(0, HEIGHT - 1)]
         land[coord[1]][coord[0]] = land[coord[1]][coord[0]] | 1
-
 def cellularAutomata() -> None:
     global neighbouringLand
 
@@ -52,13 +53,11 @@ def cellularAutomata() -> None:
             xCoord = coordsToWater[j][0]
             yCoord = coordsToWater[j][1]
             land[yCoord][xCoord] = 0
-
 def getLandTiles():
     for y in range(HEIGHT):
         for x in range(WIDTH):
             if(land[y][x] == 1):
                 landCoordinates.append([x, y])
-
 def getColourMap():
 	surrWaterTiles = 0
 	for i in range(len(allLayers)):
@@ -77,7 +76,6 @@ def getColourMap():
 						surrWaterTiles += 1
 			if(surrWaterTiles <= allLayers[i].maxWater):
 				layerMap[y][x] = allLayers[i].mapNum
-
 def generateColourMap() -> None:
 	isLand = False
 	for y in range(HEIGHT):
@@ -88,9 +86,7 @@ def generateColourMap() -> None:
 					colourMap[y][x] = allLayers[i].display
 					isLand = True
 				if isLand == False:
-					colourMap[y][x] = ZERO
-	
-
+					colourMap[y][x] = ZERO	
 def generateSeed() -> None:
     global worldSeed 
 
@@ -111,8 +107,26 @@ def generateSeed() -> None:
             except:
                 print("Invalid response, please try again...")
     seed(worldSeed)
+def getLayerCoordinates():
+	for i in range(len(allLayers)):
+		for y in range(HEIGHT):
+			for x in range(WIDTH):
+				if(colourMap[y][x] == allLayers[i].display):
+					allLayers[i].coords.append([x, y])
+# --- Genrate Monuments on Map --- #
+def generateMapMonuments():
+	for i in range(len(monumentsList)):
+		coord = monumentsList[i].Layer.coords[randint(0, len(monumentsList[i].Layer.coords) - 1)]
+		monumentsList[i].coord = coord
+		colourMap[coord[1]][coord[0]] = monumentsList[i].monumentDisplay
+		pass
 
 
+
+
+
+
+# --- MAIN --- #
 def main():
 	#generate map
 	generateSeed()
@@ -121,11 +135,10 @@ def main():
 
 	#populate map with layers
 	getLandTiles()
-	pprint(land)
 	getColourMap()
-	pprint(layerMap)
 	generateColourMap()
+	getLayerCoordinates()
+	generateMapMonuments()
 	pprint(colourMap)
-
 if __name__ == "__main__":
     main()
