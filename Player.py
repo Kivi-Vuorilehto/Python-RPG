@@ -1,12 +1,13 @@
 import sys
 from constants import *
+from random import randint
 
 class Player(object):
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
 		self.inventory = {
-			"Gold" : "5"
+			"Coins" : "5"
 		}
 	
 	def move(self, dir: str) -> bool:
@@ -49,11 +50,11 @@ class Player(object):
 		)
 
 		direction = 0
-		while answer not in (2, 4, 5, 6, 8):
-			answer = input(">>> ")
+		while direction not in (2, 4, 5, 6, 8):
+			direction = input(">>> ")
 		
 		if direction == 5:
-			prompt()
+			self.prompt()
 		else:
 			if direction == 2:
 				while not self.move("N"):
@@ -74,11 +75,10 @@ class Player(object):
 	def check_inventory(self) -> None:
 		print("ITEM   :   QTY")
 		for item in self.inventory:
-			print(f"{item}   :   {inventory[item]}")
+			print(f"{item}   :   {self.inventory[item]}")
 		print()
 
-	@staticmethod
-	def prompt() -> None:
+	def prompt(self) -> None:
 		print("Here are your options:")
 		print(
 			"""
