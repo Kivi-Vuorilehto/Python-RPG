@@ -32,7 +32,7 @@ Tree = Monument()
 Tree.monumentDisplay = "\U0001F332"
 Tree.monumentName= ""
 Tree.Layer = Grass
-Tree.monumentAmount = 50
+Tree.monumentAmount = 30
 Tree.coord = []
 
 

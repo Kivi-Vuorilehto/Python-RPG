@@ -14,11 +14,11 @@ worldSeed = 0
 
 # --- Generating Land --- #
 def pprint(grid):
-    print("\n" * 2)
-    for i in range(HEIGHT):
-        for j in range(WIDTH):
-            print(grid[i][j], end="  ") 
-        print()		
+	print("\n" * 2)
+	for i in range(HEIGHT):
+		for j in range(WIDTH):
+			print(grid[i][j], end="  ") 
+		print()		 
 		
 def createLand() -> None:
     for i in range(LAND_TO_CREATE):
@@ -76,6 +76,7 @@ def getColourMap():
 						surrWaterTiles += 1
 			if surrWaterTiles <= allLayers[i].maxWater:
 				layerMap[y][x] = allLayers[i].mapNum
+				
 def generateColourMap() -> None:
 	isLand = False
 	for y in range(HEIGHT):
@@ -86,7 +87,7 @@ def generateColourMap() -> None:
 					colourMap[y][x] = allLayers[i].display
 					isLand = True
 				if isLand == False:
-					colourMap[y][x] = ZERO	
+					colourMap[y][x] = ZERO
 					
 def generateSeed() -> None:
 	global worldSeed 
@@ -98,17 +99,14 @@ def generateSeed() -> None:
 	    seed(worldSeed)
 	    print(f"random seed: {worldSeed}")
 	else:
-		worldSeedString = int(input("Input desired seed:\n>>> "))
+		worldSeedString = input("Input desired seed:\n>>> ")
 		string = ""
 		for c in worldSeedString:
-			string.append(ord(c))
+			string += str(ord(c))
 		worldSeed = int(string)
 	seed(worldSeed)
 	
 def getLayerCoordinates():
-	if("\U0001F3E0" == "\U0001F952"):
-		print("is same")
-
 	for i in range(len(allLayers)):
 		for y in range(HEIGHT):
 			for x in range(WIDTH):
